@@ -87,8 +87,8 @@ namespace PBT205_Assessment1_Group4_AIJ
                 SendOrder(stocksForSale.ToString());
                 UserDetailsAfterStockExchange(pricePerOrder, -stocksPerOrder);
             }
-            else
-                return; // No more stock to sell 
+            else // Exit, No more stock to sell 
+                return; 
         }
 
         private void btnBuy_Click(object sender, EventArgs e)
@@ -101,8 +101,8 @@ namespace PBT205_Assessment1_Group4_AIJ
                 SendOrder(stocksForSale.ToString());
                 UserDetailsAfterStockExchange(-pricePerOrder, stocksPerOrder);
             }
-            else
-                return; // No more money to spend or stock to buy
+            else // Exit, No more money to spend or stock to buy
+                return; 
         }
 
         private void btnChat_Click(object sender, EventArgs e)

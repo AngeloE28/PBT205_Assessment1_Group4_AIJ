@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "0ZFTNAiCHgayokAST3SpNnFoTnFA7jxu4DdpKpqm9xCnTo1yobUUyTwbVN0sy4BEbY5oxlyzU/czdSIwmS8k+w==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Angelo Estoque\\Desktop\\torrens\\yr2\\t3\\PBT205\\Ass\\Ass1\\PBT205_Assessment1_Group4_AIJ\\PBT205_Assessment1_Group4_AIJ\\PBT205_Assessment1_Group4_AIJ.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Angelo Estoque\\.nuget\\packages\\rabbitmq.client\\6.2.2\\rabbitmq.client.6.2.2.nupkg.sha512",
+    "C:\\Users\\Angelo Estoque\\.nuget\\packages\\system.memory\\4.5.4\\system.memory.4.5.4.nupkg.sha512",
+    "C:\\Users\\Angelo Estoque\\.nuget\\packages\\system.threading.channels\\4.7.1\\system.threading.channels.4.7.1.nupkg.sha512"
+  ],
+  "logs": []
+}

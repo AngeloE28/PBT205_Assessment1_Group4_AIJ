@@ -1,0 +1,71 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Users\\Angelo Estoque\\Desktop\\torrens\\yr2\\t3\\PBT205\\Ass\\Ass1\\PBT205_Assessment1_Group4_AIJ\\PBT205_Assessment1_Group4_AIJ\\PBT205_Assessment1_Group4_AIJ.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\Angelo Estoque\\Desktop\\torrens\\yr2\\t3\\PBT205\\Ass\\Ass1\\PBT205_Assessment1_Group4_AIJ\\PBT205_Assessment1_Group4_AIJ\\PBT205_Assessment1_Group4_AIJ.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Angelo Estoque\\Desktop\\torrens\\yr2\\t3\\PBT205\\Ass\\Ass1\\PBT205_Assessment1_Group4_AIJ\\PBT205_Assessment1_Group4_AIJ\\PBT205_Assessment1_Group4_AIJ.csproj",
+        "projectName": "PBT205_Assessment1_Group4_AIJ",
+        "projectPath": "C:\\Users\\Angelo Estoque\\Desktop\\torrens\\yr2\\t3\\PBT205\\Ass\\Ass1\\PBT205_Assessment1_Group4_AIJ\\PBT205_Assessment1_Group4_AIJ\\PBT205_Assessment1_Group4_AIJ.csproj",
+        "packagesPath": "C:\\Users\\Angelo Estoque\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Angelo Estoque\\Desktop\\torrens\\yr2\\t3\\PBT205\\Ass\\Ass1\\PBT205_Assessment1_Group4_AIJ\\PBT205_Assessment1_Group4_AIJ\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Angelo Estoque\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp3.1": {
+            "targetAlias": "netcoreapp3.1",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
+          "dependencies": {
+            "RabbitMQ.Client": {
+              "target": "Package",
+              "version": "[6.2.2, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            },
+            "Microsoft.WindowsDesktop.App.WindowsForms": {
+              "privateAssets": "none"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.401\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

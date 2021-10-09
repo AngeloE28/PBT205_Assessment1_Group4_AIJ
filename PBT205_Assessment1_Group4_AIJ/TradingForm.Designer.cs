@@ -22,6 +22,7 @@ namespace PBT205_Assessment1_Group4_AIJ
             // Close all the forms
             Program.loginForm.Close();
             LoginForm.chatForm.Close();
+            LoginForm.contactTracingForm.Close();
 
             base.Dispose(disposing);
         }
@@ -50,8 +51,12 @@ namespace PBT205_Assessment1_Group4_AIJ
             this.btnBuy = new System.Windows.Forms.Button();
             this.btnChat = new System.Windows.Forms.Button();
             this.btnTracing = new System.Windows.Forms.Button();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.groupBox3.SuspendLayout();
+            this.groupBox4.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -174,7 +179,7 @@ namespace PBT205_Assessment1_Group4_AIJ
             // 
             // btnSell
             // 
-            this.btnSell.Location = new System.Drawing.Point(60, 275);
+            this.btnSell.Location = new System.Drawing.Point(29, 22);
             this.btnSell.Name = "btnSell";
             this.btnSell.Size = new System.Drawing.Size(75, 23);
             this.btnSell.TabIndex = 4;
@@ -184,7 +189,7 @@ namespace PBT205_Assessment1_Group4_AIJ
             // 
             // btnBuy
             // 
-            this.btnBuy.Location = new System.Drawing.Point(182, 275);
+            this.btnBuy.Location = new System.Drawing.Point(157, 22);
             this.btnBuy.Name = "btnBuy";
             this.btnBuy.Size = new System.Drawing.Size(75, 23);
             this.btnBuy.TabIndex = 5;
@@ -194,7 +199,7 @@ namespace PBT205_Assessment1_Group4_AIJ
             // 
             // btnChat
             // 
-            this.btnChat.Location = new System.Drawing.Point(60, 313);
+            this.btnChat.Location = new System.Drawing.Point(29, 22);
             this.btnChat.Name = "btnChat";
             this.btnChat.Size = new System.Drawing.Size(75, 23);
             this.btnChat.TabIndex = 6;
@@ -204,7 +209,7 @@ namespace PBT205_Assessment1_Group4_AIJ
             // 
             // btnTracing
             // 
-            this.btnTracing.Location = new System.Drawing.Point(169, 313);
+            this.btnTracing.Location = new System.Drawing.Point(141, 22);
             this.btnTracing.Name = "btnTracing";
             this.btnTracing.Size = new System.Drawing.Size(101, 23);
             this.btnTracing.TabIndex = 7;
@@ -212,15 +217,35 @@ namespace PBT205_Assessment1_Group4_AIJ
             this.btnTracing.UseVisualStyleBackColor = true;
             this.btnTracing.Click += new System.EventHandler(this.btnTracing_Click);
             // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.btnTracing);
+            this.groupBox3.Controls.Add(this.btnChat);
+            this.groupBox3.Location = new System.Drawing.Point(25, 331);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(274, 63);
+            this.groupBox3.TabIndex = 8;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Torrens Systems";
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.btnSell);
+            this.groupBox4.Controls.Add(this.btnBuy);
+            this.groupBox4.Location = new System.Drawing.Point(25, 262);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(274, 63);
+            this.groupBox4.TabIndex = 9;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Trade Stock";
+            // 
             // TradingForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(331, 359);
-            this.Controls.Add(this.btnTracing);
-            this.Controls.Add(this.btnChat);
-            this.Controls.Add(this.btnBuy);
-            this.Controls.Add(this.btnSell);
+            this.ClientSize = new System.Drawing.Size(331, 406);
+            this.Controls.Add(this.groupBox4);
+            this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Name = "TradingForm";
@@ -230,6 +255,8 @@ namespace PBT205_Assessment1_Group4_AIJ
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox4.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -252,5 +279,7 @@ namespace PBT205_Assessment1_Group4_AIJ
         private System.Windows.Forms.Button btnBuy;
         private System.Windows.Forms.Button btnChat;
         private System.Windows.Forms.Button btnTracing;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.GroupBox groupBox4;
     }
 }

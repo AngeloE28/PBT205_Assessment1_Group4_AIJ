@@ -7,28 +7,28 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Numerics;
 
 namespace PBT205_Assessment1_Group4_AIJ
 {
-    public struct user
+    public struct tradeUser
     {
-        // Variables of a user        
+        // Variables of a user for trading
         public int stockCount;
-        public double balance;
-
-        // Add more for task 3 later
-    }
+        public double balance;        
+    }    
 
     public partial class LoginForm : Form
     {
-        // Rabbitmq variables
+        // Rabbitmq variables instances
         public static String username = "";
         public static String pass = "";
-        public static String chatroom = "";
+        public String chatroom = "";
 
         // Create instances to control which system to show
         public static ChatForm chatForm;
         public static TradingForm tradeForm;
+        public static ContactTracingForm contactTracingForm;
 
         public LoginForm()
         {
@@ -45,12 +45,18 @@ namespace PBT205_Assessment1_Group4_AIJ
             pass = txtbxPassword.Text;
             chatroom = txtbxChatRoomName.Text;
 
-            // Show and create the instance of chat form
+            // Show and create the instance of the chat form
             chatForm = new ChatForm();
+            chatForm.Location = Program.loginForm.Location;
             chatForm.Show();
 
-            // Create instance of trading form
+            // Create instance of the trading form
             tradeForm = new TradingForm();
+            tradeForm.Location = chatForm.Location;
+
+            // Create instance of the contact tracing form
+            contactTracingForm = new ContactTracingForm();
+            contactTracingForm.Location = chatForm.Location;
         }
     }
 }

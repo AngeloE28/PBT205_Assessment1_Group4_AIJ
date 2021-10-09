@@ -19,3 +19,4 @@ C:\Users\Angelo Estoque\Desktop\torrens\yr2\t3\PBT205\Ass\Ass1\PBT205_Assessment
 C:\Users\Angelo Estoque\Desktop\torrens\yr2\t3\PBT205\Ass\Ass1\PBT205_Assessment1_Group4_AIJ\PBT205_Assessment1_Group4_AIJ\obj\Debug\netcoreapp3.1\PBT205_Assessment1_Group4_AIJ.dll
 C:\Users\Angelo Estoque\Desktop\torrens\yr2\t3\PBT205\Ass\Ass1\PBT205_Assessment1_Group4_AIJ\PBT205_Assessment1_Group4_AIJ\obj\Debug\netcoreapp3.1\PBT205_Assessment1_Group4_AIJ.pdb
 C:\Users\Angelo Estoque\Desktop\torrens\yr2\t3\PBT205\Ass\Ass1\PBT205_Assessment1_Group4_AIJ\PBT205_Assessment1_Group4_AIJ\obj\Debug\netcoreapp3.1\PBT205_Assessment1_Group4_AIJ.genruntimeconfig.cache
+C:\Users\Angelo Estoque\Desktop\torrens\yr2\t3\PBT205\Ass\Ass1\PBT205_Assessment1_Group4_AIJ\PBT205_Assessment1_Group4_AIJ\obj\Debug\netcoreapp3.1\PBT205_Assessment1_Group4_AIJ.ContactTracingForm.resources

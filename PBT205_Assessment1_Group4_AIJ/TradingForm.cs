@@ -42,7 +42,7 @@ namespace PBT205_Assessment1_Group4_AIJ
             password = LoginForm.pass;
 
             // Get user details
-            user userDetails;
+            tradeUser userDetails;
             ChatForm.users.TryGetValue(userName, out userDetails);
 
             // Display the users values
@@ -74,6 +74,8 @@ namespace PBT205_Assessment1_Group4_AIJ
                               exchange: this.exchangeName,
                               routingKey: tradeRoomName);
 
+            // Send an initial joining message similar to a handshake
+            SendOrder(stocksForSale.ToString());
             StartConsume();
         }
 
@@ -105,27 +107,14 @@ namespace PBT205_Assessment1_Group4_AIJ
                 return; 
         }
 
-        private void btnChat_Click(object sender, EventArgs e)
-        {
-            // Hides the trading form
-            LoginForm.tradeForm.Hide();
 
-            // Shows the chat form
-            LoginForm.chatForm.Show();
-        }
-
-        private void btnTracing_Click(object sender, EventArgs e)
-        {
-            // Do for task 3
-        }
         public void SendOrder(String message)
         {
             // Send order
-            var body = Encoding.UTF8.GetBytes(message);
-            var props = channel.CreateBasicProperties();
+            var body = Encoding.UTF8.GetBytes(message);            
             channel.BasicPublish(exchange: this.exchangeName,
                                  routingKey: this.tradeRoomName,
-                                 basicProperties: props,
+                                 basicProperties: null,
                                  body: body);
         }
 
@@ -156,7 +145,7 @@ namespace PBT205_Assessment1_Group4_AIJ
         private void UserDetailsAfterStockExchange(double pricePerOrder, int stocksPerOrder)
         {
             // Get the user details
-            user userDetails;
+            tradeUser userDetails;
             ChatForm.users.TryGetValue(userName, out userDetails);
 
             // Update the value
@@ -172,7 +161,7 @@ namespace PBT205_Assessment1_Group4_AIJ
         private bool CheckUserStockCount()
         {
             // Get the user details
-            user userDetails;
+            tradeUser userDetails;
             ChatForm.users.TryGetValue(userName, out userDetails);
 
             // Check if user still has stock
@@ -185,7 +174,7 @@ namespace PBT205_Assessment1_Group4_AIJ
         private bool CheckUserBalance()
         {
             // Get the user details
-            user userDetails;
+            tradeUser userDetails;
             ChatForm.users.TryGetValue(userName, out userDetails);
 
             // Check if user still has money
@@ -202,6 +191,25 @@ namespace PBT205_Assessment1_Group4_AIJ
                 return false;
             else
                 return true;
+        }
+        private void btnChat_Click(object sender, EventArgs e)
+        {
+            // Hides the trading form
+            LoginForm.tradeForm.Hide();
+
+            // Shows the chat form
+            LoginForm.chatForm.Location = LoginForm.tradeForm.Location;
+            LoginForm.chatForm.Show();
+        }
+
+        private void btnTracing_Click(object sender, EventArgs e)
+        {
+            // Hides the trading form
+            LoginForm.tradeForm.Hide();
+
+            // Show the contact tracing form
+            LoginForm.contactTracingForm.Location = LoginForm.chatForm.Location;
+            LoginForm.contactTracingForm.Show();
         }
     }
 }

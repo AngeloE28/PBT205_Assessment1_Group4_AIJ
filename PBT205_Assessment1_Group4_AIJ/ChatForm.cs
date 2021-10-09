@@ -26,7 +26,7 @@ namespace PBT205_Assessment1_Group4_AIJ
         private IConnection connection;
 
         // Store all the users and their data here
-        public static SortedDictionary<String, user> users;
+        public static SortedDictionary<String, tradeUser> users;
 
         public ChatForm()
         {
@@ -36,12 +36,12 @@ namespace PBT205_Assessment1_Group4_AIJ
         private void ChatForm_Load(object sender, EventArgs e)
         {
             // Store the users            
-            users = new SortedDictionary<String, user>();
+            users = new SortedDictionary<String, tradeUser>();
 
             // Get the values from form1
             userName = LoginForm.username;
             password = LoginForm.pass;
-            chatRoomName = LoginForm.chatroom;
+            chatRoomName = Program.loginForm.chatroom;
             String welcomeMsg = "Welcome " + userName + " to " + chatRoomName + " room!";
             listbxMsgHistory.Items.Add(welcomeMsg);
 
@@ -69,6 +69,8 @@ namespace PBT205_Assessment1_Group4_AIJ
                               exchange: this.exchangeName,
                               routingKey: this.chatRoomName);
 
+            // Send an initial joining message similar to a handshake
+            SendMessage("Joined!");
             StartConsume();
         }
 
@@ -81,9 +83,9 @@ namespace PBT205_Assessment1_Group4_AIJ
 
         private void btnUsers_Click(object sender, EventArgs e)
         {
-            listbxMsgHistory.Items.Add("Users are:");
             // Get and display the name
-            SortedDictionary<String, user>.KeyCollection names = users.Keys;
+            listbxMsgHistory.Items.Add("Users are:");
+            SortedDictionary<String, tradeUser>.KeyCollection names = users.Keys;
 
             // Loops through the list to print the names of the users
             foreach (String name in names)
@@ -92,14 +94,6 @@ namespace PBT205_Assessment1_Group4_AIJ
             }
         }
 
-        private void btnTrade_Click(object sender, EventArgs e)
-        {
-            // Hide the chat form
-            LoginForm.chatForm.Hide();
-
-            // Show trading form         
-            LoginForm.tradeForm.Show();
-        }
 
         public void handleMessage(String message)
         {
@@ -128,7 +122,7 @@ namespace PBT205_Assessment1_Group4_AIJ
 
         public void SendMessage(String message)
         {
-            // Send message
+            // Send message with name
             var body = Encoding.UTF8.GetBytes(message);
             var props = channel.CreateBasicProperties();
             props.UserId = this.userName;
@@ -141,12 +135,31 @@ namespace PBT205_Assessment1_Group4_AIJ
         private void AddUser(String userName)
         {
             // Create the struct to add details
-            user userDetails;
+            tradeUser userDetails;
             userDetails.balance = 10000.0f;
-            userDetails.stockCount = 1000;
+            userDetails.stockCount = 1000;            
 
             // Add the user
             users.Add(userName, userDetails);
+        }
+        private void btnTrade_Click(object sender, EventArgs e)
+        {
+            // Hide the chat form
+            LoginForm.chatForm.Hide();
+
+            // Show the trading form
+            LoginForm.tradeForm.Location = LoginForm.chatForm.Location;
+            LoginForm.tradeForm.Show();
+        }
+
+        private void btnContactTrace_Click(object sender, EventArgs e)
+        {
+            // Hide the chat form
+            LoginForm.chatForm.Hide();
+
+            // Show the contact tracing form
+            LoginForm.contactTracingForm.Location = LoginForm.chatForm.Location;
+            LoginForm.contactTracingForm.Show();
         }
     }
 }

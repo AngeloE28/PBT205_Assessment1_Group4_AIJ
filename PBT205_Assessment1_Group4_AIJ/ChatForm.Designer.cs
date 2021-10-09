@@ -22,6 +22,7 @@ namespace PBT205_Assessment1_Group4_AIJ
             // Close all the forms
             Program.loginForm.Close();
             LoginForm.tradeForm.Close();
+            LoginForm.contactTracingForm.Close();
 
             base.Dispose(disposing);
         }
@@ -39,6 +40,9 @@ namespace PBT205_Assessment1_Group4_AIJ
             this.btnUsers = new System.Windows.Forms.Button();
             this.btnTrade = new System.Windows.Forms.Button();
             this.listbxMsgHistory = new System.Windows.Forms.ListBox();
+            this.btnContactTrace = new System.Windows.Forms.Button();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // txtbxInput
@@ -70,7 +74,7 @@ namespace PBT205_Assessment1_Group4_AIJ
             // 
             // btnTrade
             // 
-            this.btnTrade.Location = new System.Drawing.Point(42, 398);
+            this.btnTrade.Location = new System.Drawing.Point(33, 21);
             this.btnTrade.Name = "btnTrade";
             this.btnTrade.Size = new System.Drawing.Size(75, 23);
             this.btnTrade.TabIndex = 3;
@@ -87,19 +91,41 @@ namespace PBT205_Assessment1_Group4_AIJ
             this.listbxMsgHistory.Size = new System.Drawing.Size(534, 364);
             this.listbxMsgHistory.TabIndex = 4;
             // 
+            // btnContactTrace
+            // 
+            this.btnContactTrace.Location = new System.Drawing.Point(141, 21);
+            this.btnContactTrace.Name = "btnContactTrace";
+            this.btnContactTrace.Size = new System.Drawing.Size(92, 23);
+            this.btnContactTrace.TabIndex = 5;
+            this.btnContactTrace.Text = "Contact Trace";
+            this.btnContactTrace.UseVisualStyleBackColor = true;
+            this.btnContactTrace.Click += new System.EventHandler(this.btnContactTrace_Click);
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.btnContactTrace);
+            this.groupBox1.Controls.Add(this.btnTrade);
+            this.groupBox1.Location = new System.Drawing.Point(109, 383);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(257, 50);
+            this.groupBox1.TabIndex = 6;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Torrens Systems";
+            // 
             // ChatForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(577, 475);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.listbxMsgHistory);
-            this.Controls.Add(this.btnTrade);
             this.Controls.Add(this.btnUsers);
             this.Controls.Add(this.btnSend);
             this.Controls.Add(this.txtbxInput);
             this.Name = "ChatForm";
             this.Text = "Torrens Cube Co. Chat Application";
             this.Load += new System.EventHandler(this.ChatForm_Load);
+            this.groupBox1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -112,5 +138,7 @@ namespace PBT205_Assessment1_Group4_AIJ
         private System.Windows.Forms.Button btnUsers;
         private System.Windows.Forms.Button btnTrade;
         private System.Windows.Forms.ListBox listbxMsgHistory;
+        private System.Windows.Forms.Button btnContactTrace;
+        private System.Windows.Forms.GroupBox groupBox1;
     }
 }

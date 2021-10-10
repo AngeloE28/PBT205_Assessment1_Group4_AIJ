@@ -10,6 +10,10 @@ using RabbitMQ.Client.Events;
 using System.Numerics;
 using System.Linq;
 
+/// <summary>
+/// This is the contact tracing system
+/// </summary>
+
 namespace PBT205_Assessment1_Group4_AIJ
 {
     public partial class ContactTracingForm : Form
@@ -338,22 +342,19 @@ namespace PBT205_Assessment1_Group4_AIJ
 
             // Create a list for filtering
             List<String> users = new List<string>();
-
-            // Create a list to remove duplicates
-            List<String> contactTraced = new List<string>();
-
+                        
             // Add the traced to the listbox
             foreach (var contacts in contactDuplicates)
             {
                 // Value is now key
                 // Get the original key
                 foreach (var keyValue in contactTraceUsers)
-                {
+                {                    
                     // Find the actual key
                     if (keyValue.Value == contacts)
-                    {
+                    {                     
                         users.Add(keyValue.Key);
-
+                     
                         // Check if this user is in the list
                         if (users.Contains(userName))
                         {
@@ -372,13 +373,9 @@ namespace PBT205_Assessment1_Group4_AIJ
                         }
                         else
                             return; // Name not in the list, exit
-                    }
+                    }                    
                 }
-            }
-
-            
-            
-            
+            } 
             users.Clear(); // Clear the list, incase one name didn't get removed for the next tracing
         }
 

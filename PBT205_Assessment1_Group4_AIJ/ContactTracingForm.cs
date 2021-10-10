@@ -338,26 +338,33 @@ namespace PBT205_Assessment1_Group4_AIJ
 
             // Create a list for filtering
             List<String> users = new List<string>();
-                        
+
+            // Create a list to remove duplicates
+            List<String> contactTraced = new List<string>();
+
             // Add the traced to the listbox
             foreach (var contacts in contactDuplicates)
             {
                 // Value is now key
                 // Get the original key
                 foreach (var keyValue in contactTraceUsers)
-                {                    
+                {
                     // Find the actual key
                     if (keyValue.Value == contacts)
-                    {                     
+                    {
                         users.Add(keyValue.Key);
-                     
+
                         // Check if this user is in the list
                         if (users.Contains(userName))
                         {
                             // Don't add the user itself
                             if (keyValue.Key != userName)
                             {
-                                listBxContactTrace.Items.Add(keyValue.Key + " at [" + keyValue.Value.X + ", " + keyValue.Value.Y + "]");
+                                // Add it to the list box if item is not a duplicate
+                                if (listBxContactTrace.Items.Contains(keyValue.Key + " at [" + keyValue.Value.X + ", " + keyValue.Value.Y + "]"))
+                                    break; // Exit, it will just add a duplicate
+                                else
+                                    listBxContactTrace.Items.Add(keyValue.Key + " at [" + keyValue.Value.X + ", " + keyValue.Value.Y + "]");
 
                                 // Remove the current user that was displayed
                                 users.Remove(keyValue.Key);
@@ -365,9 +372,12 @@ namespace PBT205_Assessment1_Group4_AIJ
                         }
                         else
                             return; // Name not in the list, exit
-                    }                    
+                    }
                 }
-            }                        
+            }
+
+            
+            
             
             users.Clear(); // Clear the list, incase one name didn't get removed for the next tracing
         }

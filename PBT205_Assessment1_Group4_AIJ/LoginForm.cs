@@ -21,9 +21,9 @@ namespace PBT205_Assessment1_Group4_AIJ
     public partial class LoginForm : Form
     {
         // Rabbitmq variables instances
-        public static String username = "";
+        public static String userName = "";
         public static String pass = "";
-        public String chatroom = "";
+        public String chatRoomName = "";
 
         // Create instances to control which system to show
         public static ChatForm chatForm;
@@ -41,9 +41,9 @@ namespace PBT205_Assessment1_Group4_AIJ
             this.Hide();
 
             // Get the values to pass to form2
-            username = txtbxUserName.Text;
+            userName = txtbxUserName.Text;
             pass = txtbxPassword.Text;
-            chatroom = txtbxChatRoomName.Text;
+            chatRoomName = txtbxChatRoomName.Text;
 
             // Show and create the instance of the chat form
             chatForm = new ChatForm();

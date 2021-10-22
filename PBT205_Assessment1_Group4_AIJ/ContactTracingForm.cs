@@ -16,16 +16,12 @@ using System.Linq;
 
 namespace PBT205_Assessment1_Group4_AIJ
 {
-    public partial class ContactTracingForm : Form
+    public partial class ContactTracingForm : Form, IRabbitMQ
     {
-        // RabbitMQ setup variables
-        private String userName = "";        
-        private String password = "";
-        private String contactTraceRoomName = "contact.trace";
-        private String queueName;
+        // RabbitMQ setup variables        
+        private String contactTraceRoomName = "contact.trace";        
         private String exchangeName = "trace";
-        private IModel channel;
-        private IConnection connection;
+        private static SetupRabbitMQ traceRBMQ;
 
         // Dictionary to keep track of the users
         private Dictionary<String, Vector2> contactTraceUsers;
@@ -44,34 +40,16 @@ namespace PBT205_Assessment1_Group4_AIJ
         {
             // Create instance of the dictionary
             contactTraceUsers = new Dictionary<string, Vector2>();
-
-            // Get the values from form1
-            userName = LoginForm.username;
-            password = LoginForm.pass;            
-
+                        
             // Initialize listbox
             listBxContactTrace.Items.Add("You Made Contact with: ");
 
             // Setup rabbitmq            
-            queueName = Guid.NewGuid().ToString();
-
-            var factory = new ConnectionFactory();
-            factory.Uri = new Uri($"amqp://{this.userName}:{password}@localhost:5672");
-            connection = factory.CreateConnection();
-            channel = connection.CreateModel();
-
-            // Declare exchange and queues
-            channel.ExchangeDeclare(exchange: this.exchangeName,
-                                    type: ExchangeType.Topic);
-
-            channel.QueueDeclare(queue: this.queueName,
-                                 durable: true,
-                                 exclusive: true,
-                                 autoDelete: true);
-
-            channel.QueueBind(queue: this.queueName,
-                              exchange: this.exchangeName,
-                              routingKey: contactTraceRoomName);
+            traceRBMQ = new SetupRabbitMQ(userName: LoginForm.userName,
+                                          password: LoginForm.pass,
+                                          roomName: contactTraceRoomName,
+                                          exchangeName: exchangeName,
+                                          exchangeType: ExchangeType.Topic);            
 
             // Initialize grid and dictionary
             InitializeGrid();
@@ -82,32 +60,32 @@ namespace PBT205_Assessment1_Group4_AIJ
             float yPos = rand.Next(0, gridHeight);
 
             // Add user
-            AddUser(userName, new Vector2(xPos, yPos));
-            lblUserNameLocation.Text = userName + " located at: ";
+            AddUser(LoginForm.userName, new Vector2(xPos, yPos));
+            lblUserNameLocation.Text = LoginForm.userName + " located at: ";
             lblLocation.Text = "[" + xPos + ", " + yPos+ "]";
 
             // Send an initial joining message similar to a handshake
             String messagePos = "[" + xPos + ", " + yPos + "]";
-            SendPos(messagePos);            
+            Send(messagePos);            
             StartConsume();
         }
 
-        public void SendPos(String message)
+        public void Send(String message)
         {
             // Send Position with name
             var body = Encoding.UTF8.GetBytes(message);
-            var props = channel.CreateBasicProperties();
-            props.UserId = this.userName;
-            channel.BasicPublish(exchange: this.exchangeName,
-                                 routingKey: this.contactTraceRoomName,
-                                 basicProperties: props,
-                                 body: body);
+            var props = traceRBMQ.GetModel().CreateBasicProperties();
+            props.UserId = LoginForm.userName;
+            traceRBMQ.GetModel().BasicPublish(exchange: this.exchangeName,
+                                              routingKey: this.contactTraceRoomName,
+                                              basicProperties: props,
+                                              body: body);
         }
 
         public void StartConsume()
         {
             // Subscribe to incoming message
-            var consumer = new EventingBasicConsumer(channel);
+            var consumer = new EventingBasicConsumer(traceRBMQ.GetModel());
             consumer.Received += (sender, ea) =>
             {
                 // Receive message
@@ -122,9 +100,9 @@ namespace PBT205_Assessment1_Group4_AIJ
                 // Add user if its not added already
                 AddUser(userID, new Vector2(newPos.X, newPos.Y));
             };
-            channel.BasicConsume(queue: queueName,
-                                 autoAck: true,
-                                 consumer: consumer);
+            traceRBMQ.GetModel().BasicConsume(queue: traceRBMQ.GetQueueName(),
+                                              autoAck: true,
+                                              consumer: consumer);
         }
 
         private Vector4 ConvertStringMsgToVector(String message)
@@ -196,7 +174,7 @@ namespace PBT205_Assessment1_Group4_AIJ
             if (gridPos.Y > gridMinBoundary)
             {
                 String messagePos = "[" + gridPos.X + ", " + gridPos.Y + ", " + gridPos.Z + ", " + gridPos.W + "]";
-                SendPos(messagePos);
+                Send(messagePos);
             }
             else
                 return; // User out of bounds, exit
@@ -211,7 +189,7 @@ namespace PBT205_Assessment1_Group4_AIJ
             if (gridPos.Y < gridHeight)
             {
                 String messagePos = "[" + gridPos.X + ", " + gridPos.Y + ", " + gridPos.Z + ", " + gridPos.W + "]";
-                SendPos(messagePos);
+                Send(messagePos);
             }
             else
                 return; // User out of bounds, exit                   
@@ -226,7 +204,7 @@ namespace PBT205_Assessment1_Group4_AIJ
             if (gridPos.X > gridMinBoundary)
             {
                 String messagePos = "[" + gridPos.X + ", " + gridPos.Y + ", " + gridPos.Z + ", " + gridPos.W + "]";
-                SendPos(messagePos);
+                Send(messagePos);
             }
             else
                 return; // User out of bounds, exit
@@ -241,7 +219,7 @@ namespace PBT205_Assessment1_Group4_AIJ
             if (gridPos.X < gridWidth)
             {
                 String messagePos = "[" + gridPos.X + ", " + gridPos.Y + ", " + gridPos.Z + ", " + gridPos.W + "]";
-                SendPos(messagePos);
+                Send(messagePos);
             }
             else
                 return; // User out of bounds, exit
@@ -254,7 +232,7 @@ namespace PBT205_Assessment1_Group4_AIJ
             Vector2 oldPos;
 
             // Update the new position
-            oldPos = contactTraceUsers[userName];
+            oldPos = contactTraceUsers[LoginForm.userName];
             newPos = oldPos;            
             newPos.X += x;
             newPos.Y += y;            
@@ -290,7 +268,7 @@ namespace PBT205_Assessment1_Group4_AIJ
         private void UpdateUserLocation(String name, Vector2 newPos)
         {
             // Show the current location of this user
-            if (String.Equals(name, userName))
+            if (String.Equals(name, LoginForm.userName))
                 lblLocation.Text = "[" + newPos.X + ", " + newPos.Y + "]";
             else
                 return; // Not this user, exit
@@ -356,10 +334,10 @@ namespace PBT205_Assessment1_Group4_AIJ
                         users.Add(keyValue.Key);
                      
                         // Check if this user is in the list
-                        if (users.Contains(userName))
+                        if (users.Contains(LoginForm.userName))
                         {
                             // Don't add the user itself
-                            if (keyValue.Key != userName)
+                            if (keyValue.Key != LoginForm.userName)
                             {
                                 // Add it to the list box if item is not a duplicate
                                 if (listBxContactTrace.Items.Contains(keyValue.Key + " at [" + keyValue.Value.X + ", " + keyValue.Value.Y + "]"))

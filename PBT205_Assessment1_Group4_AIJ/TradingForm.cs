@@ -14,16 +14,12 @@ using RabbitMQ.Client.Events;
 
 namespace PBT205_Assessment1_Group4_AIJ
 {
-    public partial class TradingForm : Form
+    public partial class TradingForm : Form, IRabbitMQ
     {
         // RabbitMQ setup variables
-        private String userName = "";
-        private String password = "";
-        private String tradeRoomName = "trade.stock";
-        private String queueName;
+        private String tradeRoomName = "trade.stock";        
         private String exchangeName = "trades";
-        private IModel channel;
-        private IConnection connection;
+        private static SetupRabbitMQ tradeRBMQ;
 
         // Stock variables
         private int stocksForSale = 1000;
@@ -37,45 +33,27 @@ namespace PBT205_Assessment1_Group4_AIJ
 
         private void TradingForm_Load(object sender, EventArgs e)
         {
-            // Get the values from form1
-            userName = LoginForm.username;
-            password = LoginForm.pass;
-
             // Get user details
             tradeUser userDetails;
-            ChatForm.users.TryGetValue(userName, out userDetails);
+            ChatForm.users.TryGetValue(LoginForm.userName, out userDetails);
 
             // Display the users values
-            lblUserName.Text = LoginForm.username;
+            lblUserName.Text = LoginForm.userName;
             lblStockCount.Text = userDetails.stockCount.ToString();
             lblMoneyCount.Text = "$" + userDetails.balance.ToString();
 
             // Display the inital stock availability
             lblStockForSaleCount.Text = stocksForSale.ToString();
 
-            // Setup rabbitmq            
-            queueName = Guid.NewGuid().ToString();
-
-            var factory = new ConnectionFactory();
-            factory.Uri = new Uri($"amqp://{this.userName}:{password}@localhost:5672");
-            connection = factory.CreateConnection();
-            channel = connection.CreateModel();
-
-            // Declare exchange and queues
-            channel.ExchangeDeclare(exchange: this.exchangeName,
-                                    type: ExchangeType.Topic);
-
-            channel.QueueDeclare(queue: this.queueName,
-                                 durable: true,
-                                 exclusive: true,
-                                 autoDelete: true);
-
-            channel.QueueBind(queue: this.queueName,
-                              exchange: this.exchangeName,
-                              routingKey: tradeRoomName);
+            // Setup rabbitmq
+            tradeRBMQ = new SetupRabbitMQ(userName: LoginForm.userName,
+                                          password: LoginForm.pass,
+                                          roomName: tradeRoomName,
+                                          exchangeName: exchangeName,
+                                          exchangeType: ExchangeType.Topic);            
 
             // Send an initial joining message similar to a handshake
-            SendOrder(stocksForSale.ToString());
+            Send(stocksForSale.ToString());
             StartConsume();
         }
 
@@ -86,7 +64,7 @@ namespace PBT205_Assessment1_Group4_AIJ
             {
                 // Update the stock and user values
                 stocksForSale += stocksPerOrder;
-                SendOrder(stocksForSale.ToString());
+                Send(stocksForSale.ToString());
                 UserDetailsAfterStockExchange(pricePerOrder, -stocksPerOrder);
             }
             else // Exit, No more stock to sell 
@@ -100,7 +78,7 @@ namespace PBT205_Assessment1_Group4_AIJ
             {
                 // Update the stock and user values
                 stocksForSale -= stocksPerOrder;
-                SendOrder(stocksForSale.ToString());
+                Send(stocksForSale.ToString());
                 UserDetailsAfterStockExchange(-pricePerOrder, stocksPerOrder);
             }
             else // Exit, No more money to spend or stock to buy
@@ -108,20 +86,20 @@ namespace PBT205_Assessment1_Group4_AIJ
         }
 
 
-        public void SendOrder(String message)
+        public void Send(String message)
         {
             // Send order
             var body = Encoding.UTF8.GetBytes(message);            
-            channel.BasicPublish(exchange: this.exchangeName,
-                                 routingKey: this.tradeRoomName,
-                                 basicProperties: null,
-                                 body: body);
+            tradeRBMQ.GetModel().BasicPublish(exchange: this.exchangeName,
+                                              routingKey: this.tradeRoomName,
+                                              basicProperties: null,
+                                              body: body);
         }
 
         public void StartConsume()
         {
             // Subscribe to incoming message
-            var consumer = new EventingBasicConsumer(channel);
+            var consumer = new EventingBasicConsumer(tradeRBMQ.GetModel());
             consumer.Received += (sender, ea) =>
             {
                 // Receive message
@@ -131,9 +109,9 @@ namespace PBT205_Assessment1_Group4_AIJ
                 stocksForSale = int.Parse(text);
                 HandleOrder();
             };
-            channel.BasicConsume(queue: queueName,
-                                 autoAck: true,
-                                 consumer: consumer);
+            tradeRBMQ.GetModel().BasicConsume(queue: tradeRBMQ.GetQueueName(),
+                                              autoAck: true,
+                                              consumer: consumer);
         }
 
         private void HandleOrder()
@@ -146,23 +124,23 @@ namespace PBT205_Assessment1_Group4_AIJ
         {
             // Get the user details
             tradeUser userDetails;
-            ChatForm.users.TryGetValue(userName, out userDetails);
+            ChatForm.users.TryGetValue(LoginForm.userName, out userDetails);
 
             // Update the value
             userDetails.stockCount += stocksPerOrder;
             userDetails.balance += pricePerOrder;
-            ChatForm.users[userName] = userDetails;
+            ChatForm.users[LoginForm.userName] = userDetails;
 
             // Display the texts
-            lblStockCount.Text = ChatForm.users[userName].stockCount.ToString();
-            lblMoneyCount.Text = "$" + ChatForm.users[userName].balance.ToString();
+            lblStockCount.Text = ChatForm.users[LoginForm.userName].stockCount.ToString();
+            lblMoneyCount.Text = "$" + ChatForm.users[LoginForm.userName].balance.ToString();
         }
 
         private bool CheckUserStockCount()
         {
             // Get the user details
             tradeUser userDetails;
-            ChatForm.users.TryGetValue(userName, out userDetails);
+            ChatForm.users.TryGetValue(LoginForm.userName, out userDetails);
 
             // Check if user still has stock
             if (userDetails.stockCount <= 0)
@@ -175,7 +153,7 @@ namespace PBT205_Assessment1_Group4_AIJ
         {
             // Get the user details
             tradeUser userDetails;
-            ChatForm.users.TryGetValue(userName, out userDetails);
+            ChatForm.users.TryGetValue(LoginForm.userName, out userDetails);
 
             // Check if user still has money
             if (userDetails.balance <= 0)

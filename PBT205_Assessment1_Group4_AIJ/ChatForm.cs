@@ -14,16 +14,11 @@ using RabbitMQ.Client.Events;
 
 namespace PBT205_Assessment1_Group4_AIJ
 {
-    public partial class ChatForm : Form
+    public partial class ChatForm : Form, IRabbitMQ
     {
-        // RabbitMQ setup variables
-        private String userName = "";
-        private String password = "";
-        private String chatRoomName = "";
-        private String queueName;
+        // RabbitMQ setup variables                        
         private String exchangeName = "chat2";
-        private IModel channel;
-        private IConnection connection;
+        private static SetupRabbitMQ chatRBMQ;
 
         // Store all the users and their data here
         public static SortedDictionary<String, tradeUser> users;
@@ -38,46 +33,29 @@ namespace PBT205_Assessment1_Group4_AIJ
             // Store the users            
             users = new SortedDictionary<String, tradeUser>();
 
-            // Get the values from form1
-            userName = LoginForm.username;
-            password = LoginForm.pass;
-            chatRoomName = Program.loginForm.chatroom;
-            String welcomeMsg = "Welcome " + userName + " to " + chatRoomName + " room!";
+            // Send welcome message
+            String welcomeMsg = "Welcome " + LoginForm.userName + " to " + Program.loginForm.chatRoomName + " room!";
             listbxMsgHistory.Items.Add(welcomeMsg);
 
             // Add user
-            AddUser(userName);
+            AddUser(LoginForm.userName);
 
-            // Setup rabbitmq            
-            queueName = Guid.NewGuid().ToString();
-
-            var factory = new ConnectionFactory();
-            factory.Uri = new Uri($"amqp://{this.userName}:{password}@localhost:5672");
-            connection = factory.CreateConnection();
-            channel = connection.CreateModel();
-
-            // Declare exchange and queues
-            channel.ExchangeDeclare(exchange: this.exchangeName,
-                                    type: ExchangeType.Direct);
-
-            channel.QueueDeclare(queue: this.queueName,
-                                 durable: true,
-                                 exclusive: true,
-                                 autoDelete: true);
-
-            channel.QueueBind(queue: this.queueName,
-                              exchange: this.exchangeName,
-                              routingKey: this.chatRoomName);
+            // Setup rabbitmq
+            chatRBMQ = new SetupRabbitMQ(userName: LoginForm.userName,
+                                         password: LoginForm.pass, 
+                                         roomName: Program.loginForm.chatRoomName, 
+                                         exchangeName: exchangeName, 
+                                         exchangeType: ExchangeType.Direct);
 
             // Send an initial joining message similar to a handshake
-            SendMessage("Joined!");
+            Send("Joined!");
             StartConsume();
         }
 
         private void btnSend_Click(object sender, EventArgs e)
         {
             // Get input
-            SendMessage(txtbxInput.Text);
+            Send(txtbxInput.Text);
             txtbxInput.Text = "";
         }
 
@@ -104,7 +82,7 @@ namespace PBT205_Assessment1_Group4_AIJ
         public void StartConsume()
         {
             // Subscribe to incoming message
-            var consumer = new EventingBasicConsumer(channel);
+            var consumer = new EventingBasicConsumer(chatRBMQ.GetModel());
             consumer.Received += (sender, ea) =>
             {
                 // Receive message
@@ -115,21 +93,21 @@ namespace PBT205_Assessment1_Group4_AIJ
                 // Add the user to the dictionary if its not in there          
                 AddUser(userID);
             };
-            channel.BasicConsume(queue: queueName,
-                                 autoAck: true,
-                                 consumer: consumer);
+            chatRBMQ.GetModel().BasicConsume(queue: chatRBMQ.GetQueueName(),
+                                             autoAck: true,
+                                             consumer: consumer);
         }
 
-        public void SendMessage(String message)
+        public void Send(String message)
         {
             // Send message with name
             var body = Encoding.UTF8.GetBytes(message);
-            var props = channel.CreateBasicProperties();
-            props.UserId = this.userName;
-            channel.BasicPublish(exchange: this.exchangeName,
-                                 routingKey: this.chatRoomName,
-                                 basicProperties: props,
-                                 body: body);
+            var props = chatRBMQ.GetModel().CreateBasicProperties();
+            props.UserId = LoginForm.userName;
+            chatRBMQ.GetModel().BasicPublish(exchange: this.exchangeName,
+                                             routingKey: chatRBMQ.GetRoomName(),
+                                             basicProperties: props,
+                                             body: body);
         }
 
         private void AddUser(String userName)

@@ -48,6 +48,7 @@ namespace PBT205_Assessment1_Group4_AIJ
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.btnTrade = new System.Windows.Forms.Button();
             this.btnChat = new System.Windows.Forms.Button();
+            this.btnInfected = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridPosSystem)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -159,7 +160,7 @@ namespace PBT205_Assessment1_Group4_AIJ
             // 
             this.groupBox3.Controls.Add(this.btnTrade);
             this.groupBox3.Controls.Add(this.btnChat);
-            this.groupBox3.Location = new System.Drawing.Point(495, 457);
+            this.groupBox3.Location = new System.Drawing.Point(495, 472);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(217, 77);
             this.groupBox3.TabIndex = 4;
@@ -186,11 +187,22 @@ namespace PBT205_Assessment1_Group4_AIJ
             this.btnChat.UseVisualStyleBackColor = true;
             this.btnChat.Click += new System.EventHandler(this.btnChat_Click);
             // 
+            // btnInfected
+            // 
+            this.btnInfected.Location = new System.Drawing.Point(513, 422);
+            this.btnInfected.Name = "btnInfected";
+            this.btnInfected.Size = new System.Drawing.Size(75, 23);
+            this.btnInfected.TabIndex = 5;
+            this.btnInfected.Text = "Infected";
+            this.btnInfected.UseVisualStyleBackColor = true;
+            this.btnInfected.Click += new System.EventHandler(this.btnInfected_Click);
+            // 
             // ContactTracingForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(738, 561);
+            this.Controls.Add(this.btnInfected);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.listBxContactTrace);
             this.Controls.Add(this.groupBox2);
@@ -223,5 +235,6 @@ namespace PBT205_Assessment1_Group4_AIJ
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Button btnTrade;
         private System.Windows.Forms.Button btnChat;
+        private System.Windows.Forms.Button btnInfected;
     }
 }

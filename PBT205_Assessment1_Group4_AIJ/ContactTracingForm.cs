@@ -24,7 +24,8 @@ namespace PBT205_Assessment1_Group4_AIJ
         private static SetupRabbitMQ traceRBMQ;
 
         // Dictionary to keep track of the users
-        private Dictionary<String, Vector2> contactTraceUsers;        
+        private Dictionary<String, Vector2> contactTraceUsers;
+        private List<String> infectedUsers;
 
         // Variables to control the grid
         private int gridWidth = 10;
@@ -36,7 +37,8 @@ namespace PBT205_Assessment1_Group4_AIJ
             InitializeComponent();
 
             // Create instance of the dictionary
-            contactTraceUsers = new Dictionary<string, Vector2>();            
+            contactTraceUsers = new Dictionary<string, Vector2>();
+            infectedUsers = new List<string>();
 
             // Initialize listbox
             listBxContactTrace.Items.Add("You Made Contact with: ");
@@ -252,8 +254,13 @@ namespace PBT205_Assessment1_Group4_AIJ
             // Don't clear the spot incase there are more than one user on the spot
             String oldGridVal = dataGridPosSystem[(int)oldPos.X, (int)oldPos.Y].Value.ToString();
             if (oldGridVal.Contains(name))
+            {
                 oldGridVal = oldGridVal.Replace(name, "")
                                  .Replace("  ", "");
+                
+                // Reset the user to white
+                dataGridPosSystem[(int)oldPos.X, (int)oldPos.Y].Style.BackColor = Color.White;
+            }
             dataGridPosSystem[(int)oldPos.X, (int)oldPos.Y].Value = oldGridVal;
 
             // Update the grid and position information
@@ -265,6 +272,13 @@ namespace PBT205_Assessment1_Group4_AIJ
             else
                 newGridVal = name;
             dataGridPosSystem[(int)contactTraceUsers[name].X, (int)contactTraceUsers[name].Y].Value = newGridVal;            
+
+
+            // Reset each user back to white
+            foreach(var traceUser in contactTraceUsers)
+            {
+                dataGridPosSystem[(int)traceUser.Value.X, (int)traceUser.Value.Y].Style.BackColor = Color.White;
+            }
         }
 
         private void UpdateUserLocation(String name, Vector2 newPos)
@@ -345,7 +359,11 @@ namespace PBT205_Assessment1_Group4_AIJ
                                 if (listBxContactTrace.Items.Contains(keyValue.Key + " at [" + keyValue.Value.X + ", " + keyValue.Value.Y + "]"))
                                     break; // Exit, it will just add a duplicate
                                 else
+                                {
                                     listBxContactTrace.Items.Add(keyValue.Key + " at [" + keyValue.Value.X + ", " + keyValue.Value.Y + "]");
+                                    if (!infectedUsers.Contains(keyValue.Key))
+                                        infectedUsers.Add(keyValue.Key);
+                                }
 
                                 // Remove the current user that was displayed
                                 users.Remove(keyValue.Key);
@@ -378,5 +396,22 @@ namespace PBT205_Assessment1_Group4_AIJ
             LoginForm.tradeForm.Location = LoginForm.contactTracingForm.Location;
             LoginForm.tradeForm.Show();
         }
+
+        private void btnInfected_Click(object sender, EventArgs e)
+        {
+            foreach (var traceUser in contactTraceUsers)
+            {
+                // Mark the user as infected
+                if (String.Equals(traceUser.Key, LoginForm.userName))
+                    dataGridPosSystem[(int)traceUser.Value.X, (int)traceUser.Value.Y].Style.BackColor = Color.Red;
+
+                // Mark the other users they came in contact with as infected
+                foreach (var infectedUser in infectedUsers)
+                {
+                    if (String.Equals(traceUser.Key, infectedUser))
+                        dataGridPosSystem[(int)traceUser.Value.X, (int)traceUser.Value.Y].Style.BackColor = Color.Red;
+                }
+            }
+        }        
     }
 }

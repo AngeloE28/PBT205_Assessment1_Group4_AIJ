@@ -24,7 +24,7 @@ namespace PBT205_Assessment1_Group4_AIJ
         private static SetupRabbitMQ traceRBMQ;
 
         // Dictionary to keep track of the users
-        private Dictionary<String, Vector2> contactTraceUsers;
+        private Dictionary<String, Vector2> contactTraceUsers;        
 
         // Variables to control the grid
         private int gridWidth = 10;
@@ -34,13 +34,10 @@ namespace PBT205_Assessment1_Group4_AIJ
         public ContactTracingForm()
         {
             InitializeComponent();
-        }
 
-        private void ContactTracingForm_Load(object sender, EventArgs e)
-        {
             // Create instance of the dictionary
-            contactTraceUsers = new Dictionary<string, Vector2>();
-                        
+            contactTraceUsers = new Dictionary<string, Vector2>();            
+
             // Initialize listbox
             listBxContactTrace.Items.Add("You Made Contact with: ");
 
@@ -49,7 +46,7 @@ namespace PBT205_Assessment1_Group4_AIJ
                                           password: LoginForm.pass,
                                           roomName: contactTraceRoomName,
                                           exchangeName: exchangeName,
-                                          exchangeType: ExchangeType.Topic);            
+                                          exchangeType: ExchangeType.Topic);
 
             // Initialize grid and dictionary
             InitializeGrid();
@@ -62,12 +59,17 @@ namespace PBT205_Assessment1_Group4_AIJ
             // Add user
             AddUser(LoginForm.userName, new Vector2(xPos, yPos));
             lblUserNameLocation.Text = LoginForm.userName + " located at: ";
-            lblLocation.Text = "[" + xPos + ", " + yPos+ "]";
+            lblLocation.Text = "[" + xPos + ", " + yPos + "]";            
 
             // Send an initial joining message similar to a handshake
             String messagePos = "[" + xPos + ", " + yPos + "]";
-            Send(messagePos);            
+            Send(messagePos);
             StartConsume();
+        }
+
+        private void ContactTracingForm_Load(object sender, EventArgs e)
+        {
+            
         }
 
         public void Send(String message)

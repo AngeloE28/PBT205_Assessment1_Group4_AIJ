@@ -20,7 +20,7 @@ namespace PBT205_Assessment1_Group4_AIJ
             }
 
             // Close all the forms
-            Program.loginForm.Close();
+            Program.loginForm.Close();            
             LoginForm.chatForm.Close();
             LoginForm.tradeForm.Close();
 

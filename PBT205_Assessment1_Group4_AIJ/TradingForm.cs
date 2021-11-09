@@ -29,10 +29,7 @@ namespace PBT205_Assessment1_Group4_AIJ
         public TradingForm()
         {
             InitializeComponent();
-        }
 
-        private void TradingForm_Load(object sender, EventArgs e)
-        {
             // Get user details
             tradeUser userDetails;
             ChatForm.users.TryGetValue(LoginForm.userName, out userDetails);
@@ -50,11 +47,16 @@ namespace PBT205_Assessment1_Group4_AIJ
                                           password: LoginForm.pass,
                                           roomName: tradeRoomName,
                                           exchangeName: exchangeName,
-                                          exchangeType: ExchangeType.Topic);            
+                                          exchangeType: ExchangeType.Topic);
 
             // Send an initial joining message similar to a handshake
             Send(stocksForSale.ToString());
             StartConsume();
+        }
+
+        private void TradingForm_Load(object sender, EventArgs e)
+        {
+            
         }
 
         private void btnSell_Click(object sender, EventArgs e)

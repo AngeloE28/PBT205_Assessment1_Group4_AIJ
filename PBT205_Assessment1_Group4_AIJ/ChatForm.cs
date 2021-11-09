@@ -26,10 +26,7 @@ namespace PBT205_Assessment1_Group4_AIJ
         public ChatForm()
         {
             InitializeComponent();
-        }
 
-        private void ChatForm_Load(object sender, EventArgs e)
-        {
             // Store the users            
             users = new SortedDictionary<String, tradeUser>();
 
@@ -42,14 +39,19 @@ namespace PBT205_Assessment1_Group4_AIJ
 
             // Setup rabbitmq
             chatRBMQ = new SetupRabbitMQ(userName: LoginForm.userName,
-                                         password: LoginForm.pass, 
-                                         roomName: Program.loginForm.chatRoomName, 
-                                         exchangeName: exchangeName, 
+                                         password: LoginForm.pass,
+                                         roomName: Program.loginForm.chatRoomName,
+                                         exchangeName: exchangeName,
                                          exchangeType: ExchangeType.Direct);
 
             // Send an initial joining message similar to a handshake
             Send("Joined!");
             StartConsume();
+        }
+
+        private void ChatForm_Load(object sender, EventArgs e)
+        {
+            
         }
 
         private void btnSend_Click(object sender, EventArgs e)

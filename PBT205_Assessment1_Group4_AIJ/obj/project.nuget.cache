@@ -1,12 +1,16 @@
 {
   "version": 2,
-  "dgSpecHash": "zp6zBD58GxiiGebtTXzUsLmyh0SgGwdQvwJfVNhlTyAFSZznI5d2IULZBl0Apg/DSb0WpM6+YXqWOh1eRJuPsg==",
+  "dgSpecHash": "4jzTc6qyXBHDByEMiojfkryhfVMxPaPADDpZrk4GPU0xURlKbg3Q0rlkGY3iJJVyAnrkAGIq6u4MH5uAfB4Zwg==",
   "success": true,
   "projectFilePath": "C:\\Users\\Angelo Estoque\\Desktop\\torrens\\yr2\\t3\\PBT205\\Ass\\Ass1\\PBT205_Assessment1_Group4_AIJ\\PBT205_Assessment1_Group4_AIJ\\PBT205_Assessment1_Group4_AIJ.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Angelo Estoque\\.nuget\\packages\\rabbitmq.client\\6.2.2\\rabbitmq.client.6.2.2.nupkg.sha512",
+    "C:\\Users\\Angelo Estoque\\.nuget\\packages\\system.buffers\\4.5.1\\system.buffers.4.5.1.nupkg.sha512",
     "C:\\Users\\Angelo Estoque\\.nuget\\packages\\system.memory\\4.5.4\\system.memory.4.5.4.nupkg.sha512",
-    "C:\\Users\\Angelo Estoque\\.nuget\\packages\\system.threading.channels\\4.7.1\\system.threading.channels.4.7.1.nupkg.sha512"
+    "C:\\Users\\Angelo Estoque\\.nuget\\packages\\system.numerics.vectors\\4.5.0\\system.numerics.vectors.4.5.0.nupkg.sha512",
+    "C:\\Users\\Angelo Estoque\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\4.5.3\\system.runtime.compilerservices.unsafe.4.5.3.nupkg.sha512",
+    "C:\\Users\\Angelo Estoque\\.nuget\\packages\\system.threading.channels\\4.7.1\\system.threading.channels.4.7.1.nupkg.sha512",
+    "C:\\Users\\Angelo Estoque\\.nuget\\packages\\system.threading.tasks.extensions\\4.5.4\\system.threading.tasks.extensions.4.5.4.nupkg.sha512"
   ],
   "logs": []
 }

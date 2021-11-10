@@ -40,8 +40,9 @@ namespace PBT205_Assessment1_Group4_AIJ
             contactTraceUsers = new Dictionary<string, Vector2>();
             infectedUsers = new List<string>();
 
-            // Initialize listbox
+            // Initialize winform components
             listBxContactTrace.Items.Add("You Made Contact with: ");
+            grpBxTitle.Text = "Infected Users by " + LoginForm.userName;
 
             // Setup rabbitmq            
             traceRBMQ = new SetupRabbitMQ(userName: LoginForm.userName,

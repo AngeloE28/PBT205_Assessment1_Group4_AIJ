@@ -49,10 +49,13 @@ namespace PBT205_Assessment1_Group4_AIJ
             this.btnTrade = new System.Windows.Forms.Button();
             this.btnChat = new System.Windows.Forms.Button();
             this.btnInfected = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.grpBxTitle = new System.Windows.Forms.GroupBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridPosSystem)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            this.grpBxTitle.SuspendLayout();
             this.SuspendLayout();
             // 
             // dataGridPosSystem
@@ -189,7 +192,7 @@ namespace PBT205_Assessment1_Group4_AIJ
             // 
             // btnInfected
             // 
-            this.btnInfected.Location = new System.Drawing.Point(513, 422);
+            this.btnInfected.Location = new System.Drawing.Point(125, 19);
             this.btnInfected.Name = "btnInfected";
             this.btnInfected.Size = new System.Drawing.Size(75, 23);
             this.btnInfected.TabIndex = 5;
@@ -197,17 +200,37 @@ namespace PBT205_Assessment1_Group4_AIJ
             this.btnInfected.UseVisualStyleBackColor = true;
             this.btnInfected.Click += new System.EventHandler(this.btnInfected_Click);
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(18, 23);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(82, 15);
+            this.label1.TabIndex = 6;
+            this.label1.Text = "Show Infected";
+            // 
+            // grpBxTitle
+            // 
+            this.grpBxTitle.Controls.Add(this.btnInfected);
+            this.grpBxTitle.Controls.Add(this.label1);
+            this.grpBxTitle.Location = new System.Drawing.Point(495, 413);
+            this.grpBxTitle.Name = "grpBxTitle";
+            this.grpBxTitle.Size = new System.Drawing.Size(217, 53);
+            this.grpBxTitle.TabIndex = 7;
+            this.grpBxTitle.TabStop = false;
+            this.grpBxTitle.Text = "Users Infected";
+            // 
             // ContactTracingForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(738, 561);
-            this.Controls.Add(this.btnInfected);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.listBxContactTrace);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.dataGridPosSystem);
+            this.Controls.Add(this.grpBxTitle);
             this.Name = "ContactTracingForm";
             this.Text = "Torrens Cube Co. Contact Tracing Application";
             this.Load += new System.EventHandler(this.ContactTracingForm_Load);
@@ -216,6 +239,8 @@ namespace PBT205_Assessment1_Group4_AIJ
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.groupBox3.ResumeLayout(false);
+            this.grpBxTitle.ResumeLayout(false);
+            this.grpBxTitle.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -236,5 +261,7 @@ namespace PBT205_Assessment1_Group4_AIJ
         private System.Windows.Forms.Button btnTrade;
         private System.Windows.Forms.Button btnChat;
         private System.Windows.Forms.Button btnInfected;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.GroupBox grpBxTitle;
     }
 }

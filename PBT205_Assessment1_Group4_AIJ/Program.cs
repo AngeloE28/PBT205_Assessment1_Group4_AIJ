@@ -15,8 +15,7 @@ namespace PBT205_Assessment1_Group4_AIJ
         /// </summary>
         [STAThread]
         static void Main()
-        {
-            Application.SetHighDpiMode(HighDpiMode.SystemAware);
+        {            
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             

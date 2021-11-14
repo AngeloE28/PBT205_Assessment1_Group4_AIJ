@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -25,7 +26,9 @@ namespace PBT205_Assessment1_Group4_AIJ
         private int stocksForSale = 1000;
         private const int stocksPerOrder = 100;
         private const double pricePerOrder = 1000;
+        private int currentStonkValue = 500;
 
+        // Initializer i think
         public TradingForm()
         {
             InitializeComponent();
@@ -52,6 +55,41 @@ namespace PBT205_Assessment1_Group4_AIJ
             // Send an initial joining message similar to a handshake
             Send(stocksForSale.ToString());
             StartConsume();
+
+            // Setup stock value graph
+
+            // Set Size of graph
+            var objChart = stockValueGraph.ChartAreas[0];
+
+            objChart.AxisX.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Number;
+            objChart.AxisX.Minimum = 0;
+            objChart.AxisX.Maximum = 10;
+
+            objChart.AxisY.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Number;
+
+            objChart.AxisY.Minimum = 0;
+            objChart.AxisY.Maximum = 1000;
+
+            // Random start to graph
+
+            Random rand = new Random();
+
+            stockValueGraph.Series["$$$"].Points.AddXY(0, currentStonkValue);
+
+            for (int i = 1; i < 8; i++)
+            {
+                int newStonkValue = currentStonkValue + rand.Next(-200, 200);
+
+                if (newStonkValue < 100)
+                    newStonkValue = 100;
+                else if (newStonkValue > objChart.AxisY.Maximum - 100)
+                    objChart.AxisY.Maximum = newStonkValue + 100;
+
+                currentStonkValue = newStonkValue;
+                stockValueGraph.Series["$$$"].Points.AddXY(i, newStonkValue);
+
+                lblPrice.Text = "$" + newStonkValue;
+            }
         }
 
         private void TradingForm_Load(object sender, EventArgs e)
@@ -67,7 +105,7 @@ namespace PBT205_Assessment1_Group4_AIJ
                 // Update the stock and user values
                 stocksForSale += stocksPerOrder;
                 Send(stocksForSale.ToString());
-                UserDetailsAfterStockExchange(pricePerOrder, -stocksPerOrder);
+                UserDetailsAfterStockExchange(currentStonkValue, -stocksPerOrder);
             }
             else // Exit, No more stock to sell 
                 return; 
@@ -81,7 +119,7 @@ namespace PBT205_Assessment1_Group4_AIJ
                 // Update the stock and user values
                 stocksForSale -= stocksPerOrder;
                 Send(stocksForSale.ToString());
-                UserDetailsAfterStockExchange(-pricePerOrder, stocksPerOrder);
+                UserDetailsAfterStockExchange(-currentStonkValue, stocksPerOrder);
             }
             else // Exit, No more money to spend or stock to buy
                 return; 
@@ -191,5 +229,55 @@ namespace PBT205_Assessment1_Group4_AIJ
             LoginForm.contactTracingForm.Location = LoginForm.chatForm.Location;
             LoginForm.contactTracingForm.Show();
         }
+
+        private void chart1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            // Set Size of graph
+            var objChart = stockValueGraph.ChartAreas[0];
+
+            objChart.AxisX.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Number;
+
+            objChart.AxisX.Maximum++;
+
+            // Setup stock value graph
+
+            Random rand = new Random();
+
+            int newStonkValue = currentStonkValue + rand.Next(-200, 200);
+
+            if (newStonkValue < 100)
+                newStonkValue = 100;
+            else if (newStonkValue > objChart.AxisY.Maximum - 100)
+                objChart.AxisY.Maximum = newStonkValue + 100;
+
+            currentStonkValue = newStonkValue;
+            stockValueGraph.Series["$$$"].Points.AddXY(stockValueGraph.Series["$$$"].Points.Count, newStonkValue);
+
+            lblPrice.Text = "$" + newStonkValue;
+        }
+
+        private void clearButton_Click(object sender, EventArgs e)
+        {
+            var objChart = stockValueGraph.ChartAreas[0];
+
+            objChart.AxisX.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Number;
+
+            objChart.AxisX.Minimum = objChart.AxisX.Maximum - 10;
+        }
+
+        private void showButton_Click(object sender, EventArgs e)
+        {
+            var objChart = stockValueGraph.ChartAreas[0];
+
+            objChart.AxisX.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Number;
+
+            objChart.AxisX.Minimum = 0;
+        }
     }
 }
+ 

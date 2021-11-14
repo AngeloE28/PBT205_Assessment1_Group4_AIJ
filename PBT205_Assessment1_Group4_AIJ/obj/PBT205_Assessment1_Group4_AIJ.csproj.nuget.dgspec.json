@@ -1,20 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Angelo Estoque\\Desktop\\torrens\\yr2\\t3\\PBT205\\Ass\\Ass1\\PBT205_Assessment1_Group4_AIJ\\PBT205_Assessment1_Group4_AIJ\\PBT205_Assessment1_Group4_AIJ.csproj": {}
+    "C:\\Users\\isaac\\OneDrive\\Programming\\GitHub\\PBT205_Assessment1_Group4_AIJ\\PBT205_Assessment1_Group4_AIJ\\PBT205_Assessment1_Group4_AIJ.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Angelo Estoque\\Desktop\\torrens\\yr2\\t3\\PBT205\\Ass\\Ass1\\PBT205_Assessment1_Group4_AIJ\\PBT205_Assessment1_Group4_AIJ\\PBT205_Assessment1_Group4_AIJ.csproj": {
+    "C:\\Users\\isaac\\OneDrive\\Programming\\GitHub\\PBT205_Assessment1_Group4_AIJ\\PBT205_Assessment1_Group4_AIJ\\PBT205_Assessment1_Group4_AIJ.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Angelo Estoque\\Desktop\\torrens\\yr2\\t3\\PBT205\\Ass\\Ass1\\PBT205_Assessment1_Group4_AIJ\\PBT205_Assessment1_Group4_AIJ\\PBT205_Assessment1_Group4_AIJ.csproj",
+        "projectUniqueName": "C:\\Users\\isaac\\OneDrive\\Programming\\GitHub\\PBT205_Assessment1_Group4_AIJ\\PBT205_Assessment1_Group4_AIJ\\PBT205_Assessment1_Group4_AIJ.csproj",
         "projectName": "PBT205_Assessment1_Group4_AIJ",
-        "projectPath": "C:\\Users\\Angelo Estoque\\Desktop\\torrens\\yr2\\t3\\PBT205\\Ass\\Ass1\\PBT205_Assessment1_Group4_AIJ\\PBT205_Assessment1_Group4_AIJ\\PBT205_Assessment1_Group4_AIJ.csproj",
-        "packagesPath": "C:\\Users\\Angelo Estoque\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Angelo Estoque\\Desktop\\torrens\\yr2\\t3\\PBT205\\Ass\\Ass1\\PBT205_Assessment1_Group4_AIJ\\PBT205_Assessment1_Group4_AIJ\\obj\\",
+        "projectPath": "C:\\Users\\isaac\\OneDrive\\Programming\\GitHub\\PBT205_Assessment1_Group4_AIJ\\PBT205_Assessment1_Group4_AIJ\\PBT205_Assessment1_Group4_AIJ.csproj",
+        "packagesPath": "C:\\Users\\isaac\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\isaac\\OneDrive\\Programming\\GitHub\\PBT205_Assessment1_Group4_AIJ\\PBT205_Assessment1_Group4_AIJ\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\Angelo Estoque\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\isaac\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -45,7 +49,7 @@
               "version": "[6.2.2, )"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.402\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.403\\RuntimeIdentifierGraph.json"
         }
       },
       "runtimes": {

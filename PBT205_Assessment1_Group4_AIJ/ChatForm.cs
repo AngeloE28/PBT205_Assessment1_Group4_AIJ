@@ -19,6 +19,7 @@ namespace PBT205_Assessment1_Group4_AIJ
         // RabbitMQ setup variables                        
         private String exchangeName = "chat2";
         private static SetupRabbitMQ chatRBMQ;
+        private String userID;
 
         // Store all the users and their data here
         public static SortedDictionary<String, tradeUser> users;
@@ -26,6 +27,11 @@ namespace PBT205_Assessment1_Group4_AIJ
         public ChatForm()
         {
             InitializeComponent();
+
+            // Custom listbox draw mode for bold text
+            // Subscribe to the function
+            listbxMsgHistory.DrawMode = DrawMode.OwnerDrawFixed;
+            listbxMsgHistory.DrawItem += new DrawItemEventHandler(listbxMsgHistory_DrawItem);
 
             // Store the users            
             users = new SortedDictionary<String, tradeUser>();
@@ -91,7 +97,7 @@ namespace PBT205_Assessment1_Group4_AIJ
                 var text = Encoding.UTF8.GetString(ea.Body.ToArray());
                 var userID = ea.BasicProperties.UserId;
                 handleMessage(userID + ": " + text);
-
+                this.userID = userID;
                 // Add the user to the dictionary if its not in there          
                 AddUser(userID);
             };
@@ -141,5 +147,98 @@ namespace PBT205_Assessment1_Group4_AIJ
             LoginForm.contactTracingForm.Location = LoginForm.chatForm.Location;
             LoginForm.contactTracingForm.Show();
         }
+
+        private void listbxMsgHistory_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            e.DrawBackground();
+            e.DrawFocusRectangle();
+
+            //  String to hold the message to display
+            String item = listbxMsgHistory.Items[e.Index].ToString();
+            String boldMsg;
+            String remainingMsg;
+
+            // Finding the substring inbetween two special characters
+            // found in https://stackoverflow.com/questions/12108582/extracting-string-between-two-characters
+            // By: name, Date: dd/mm/yyyy
+            remainingMsg = item;
+            int posFrom = item.IndexOf("/*");
+            if (posFrom != -1) // Found the first special character
+            {
+                int posTo = item.IndexOf("*/", posFrom + 1);
+                if (posTo != -1) // Found the second special character
+                {
+                    boldMsg = item.Substring(posFrom + 2, posTo - posFrom - 2); // Gets the substring between the two special characters,
+                                                                                // adjusting the size according to the size of the special characters                    
+
+
+                    // Remove the bold message string from the original string
+                    remainingMsg = remainingMsg.Replace(item.Substring(posFrom, posTo - posFrom + 2), "");                    
+                    // Check if the bold text is at the start of the string
+                    if (posFrom != userID.Length + 2)
+                    {
+                        // Display regular text first
+                        e.Graphics.DrawString(remainingMsg,
+                                              new Font(FontFamily.GenericSansSerif, 10, FontStyle.Regular),
+                                              Brushes.Black,
+                                              e.Bounds.X,
+                                              e.Bounds.Y);
+
+                        // Get the width of the text
+                        float pos = TextRenderer.MeasureText(remainingMsg,
+                                                           new Font(FontFamily.GenericSansSerif, 10, FontStyle.Regular)).Width;
+
+                        // Display the bold message with the proper position
+                        e.Graphics.DrawString(boldMsg,
+                                              new Font(FontFamily.GenericSansSerif, 10, FontStyle.Bold),
+                                              Brushes.Black,
+                                              pos,
+                                              e.Bounds.Y);
+                    }
+                    else
+                    {
+                        // Remove the userID
+                        remainingMsg = remainingMsg.Replace(userID + ":", "");
+                        String startSring = userID + ":";
+                        // Display the regular message with the proper position
+                        e.Graphics.DrawString(startSring,
+                                              new Font(FontFamily.GenericSansSerif, 10, FontStyle.Regular),
+                                              Brushes.Black,
+                                              e.Bounds.X,
+                                              e.Bounds.Y);
+
+                        // Get the userID width
+                        float userPos = TextRenderer.MeasureText(userID,
+                                                                 new Font(FontFamily.GenericSansSerif, 10, FontStyle.Regular)).Width;
+                        // Display bold text first
+                        e.Graphics.DrawString(boldMsg,
+                                              new Font(FontFamily.GenericSansSerif, 10, FontStyle.Bold),
+                                              Brushes.Black,
+                                              userPos,
+                                              e.Bounds.Y);
+
+                        // Get the width of the text
+                        float pos = TextRenderer.MeasureText(boldMsg,
+                                                             new Font(FontFamily.GenericSansSerif, 10, FontStyle.Bold)).Width;
+
+                        // Display the regular message with the proper position
+                        e.Graphics.DrawString(remainingMsg,
+                                              new Font(FontFamily.GenericSansSerif, 10, FontStyle.Regular),
+                                              Brushes.Black,
+                                              pos,
+                                              e.Bounds.Y);
+
+                    }
+                    return;
+                }
+            }
+
+            // No bold text, draw string normally
+            e.Graphics.DrawString(item,
+                                  new Font(FontFamily.GenericSansSerif, 10, FontStyle.Regular),
+                                  Brushes.Black,
+                                  e.Bounds);
+        }
+
     }
 }

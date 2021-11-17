@@ -153,15 +153,15 @@ namespace PBT205_Assessment1_Group4_AIJ
             e.DrawBackground();
             e.DrawFocusRectangle();
 
+            float textSize = 10.0f;
+            float textSpacing = 9.5f;
             //  String to hold the message to display
             String item = listbxMsgHistory.Items[e.Index].ToString();
-            String boldMsg;
-            String remainingMsg;
+            String boldMsg;            
 
             // Finding the substring inbetween two special characters
             // found in https://stackoverflow.com/questions/12108582/extracting-string-between-two-characters
-            // By: name, Date: dd/mm/yyyy
-            remainingMsg = item;
+            // By: name, Date: dd/mm/yyyy            
             int posFrom = item.IndexOf("/*");
             if (posFrom != -1) // Found the first special character
             {
@@ -170,62 +170,73 @@ namespace PBT205_Assessment1_Group4_AIJ
                 {
                     boldMsg = item.Substring(posFrom + 2, posTo - posFrom - 2); // Gets the substring between the two special characters,
                                                                                 // adjusting the size according to the size of the special characters                    
-
-
-                    // Remove the bold message string from the original string
-                    remainingMsg = remainingMsg.Replace(item.Substring(posFrom, posTo - posFrom + 2), "");                    
+                                                                                                                        
                     // Check if the bold text is at the start of the string
                     if (posFrom != userID.Length + 2)
                     {
                         // Display regular text first
-                        e.Graphics.DrawString(remainingMsg,
-                                              new Font(FontFamily.GenericSansSerif, 10, FontStyle.Regular),
+                        e.Graphics.DrawString(item.Substring(0, posFrom),
+                                              new Font(FontFamily.GenericSansSerif, textSize, FontStyle.Regular),
                                               Brushes.Black,
                                               e.Bounds.X,
                                               e.Bounds.Y);
 
                         // Get the width of the text
-                        float pos = TextRenderer.MeasureText(remainingMsg,
-                                                           new Font(FontFamily.GenericSansSerif, 10, FontStyle.Regular)).Width;
+                        float startingPos = TextRenderer.MeasureText(item.Substring(0, posFrom),
+                                                                 new Font(FontFamily.GenericSansSerif, textSpacing, FontStyle.Regular)).Width;
 
                         // Display the bold message with the proper position
                         e.Graphics.DrawString(boldMsg,
-                                              new Font(FontFamily.GenericSansSerif, 10, FontStyle.Bold),
+                                              new Font(FontFamily.GenericSansSerif, textSize, FontStyle.Bold),
                                               Brushes.Black,
-                                              pos,
+                                              startingPos,
                                               e.Bounds.Y);
+
+                        float boldPos = TextRenderer.MeasureText(boldMsg,
+                                                                 new Font(FontFamily.GenericSansSerif, textSpacing, FontStyle.Bold)).Width;
+
+                        String lastChar = item.Substring(item.Length - 1);
+                        float remainingMsgPos = item.IndexOf(lastChar);
+
+                        // Check and show if there is text after the bold texts
+                        if(remainingMsgPos != posTo)
+                        {
+                            e.Graphics.DrawString(item.Substring(posTo + 2),
+                                                  new Font(FontFamily.GenericSansSerif, textSize, FontStyle.Regular),
+                                                  Brushes.Black,
+                                                  startingPos + boldPos,
+                                                  e.Bounds.Y);
+                        }
                     }
                     else
-                    {
-                        // Remove the userID
-                        remainingMsg = remainingMsg.Replace(userID + ":", "");
+                    {                          
                         String startSring = userID + ":";
                         // Display the regular message with the proper position
                         e.Graphics.DrawString(startSring,
-                                              new Font(FontFamily.GenericSansSerif, 10, FontStyle.Regular),
+                                              new Font(FontFamily.GenericSansSerif, textSize, FontStyle.Regular),
                                               Brushes.Black,
                                               e.Bounds.X,
                                               e.Bounds.Y);
 
                         // Get the userID width
                         float userPos = TextRenderer.MeasureText(userID,
-                                                                 new Font(FontFamily.GenericSansSerif, 10, FontStyle.Regular)).Width;
+                                                                 new Font(FontFamily.GenericSansSerif, textSpacing, FontStyle.Regular)).Width;
                         // Display bold text first
                         e.Graphics.DrawString(boldMsg,
-                                              new Font(FontFamily.GenericSansSerif, 10, FontStyle.Bold),
+                                              new Font(FontFamily.GenericSansSerif, textSize, FontStyle.Bold),
                                               Brushes.Black,
                                               userPos,
                                               e.Bounds.Y);
 
                         // Get the width of the text
-                        float pos = TextRenderer.MeasureText(boldMsg,
-                                                             new Font(FontFamily.GenericSansSerif, 10, FontStyle.Bold)).Width;
+                        float boldPos = TextRenderer.MeasureText(boldMsg,
+                                                             new Font(FontFamily.GenericSansSerif, textSpacing, FontStyle.Bold)).Width;
 
                         // Display the regular message with the proper position
-                        e.Graphics.DrawString(remainingMsg,
-                                              new Font(FontFamily.GenericSansSerif, 10, FontStyle.Regular),
+                        e.Graphics.DrawString(item.Substring(posTo + 2),
+                                              new Font(FontFamily.GenericSansSerif, textSize, FontStyle.Regular),
                                               Brushes.Black,
-                                              pos,
+                                              userPos + boldPos,
                                               e.Bounds.Y);
 
                     }

@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using System.Numerics;
 
 /// <summary>
 /// This is the trading system 
@@ -23,10 +24,13 @@ namespace PBT205_Assessment1_Group4_AIJ
         private static SetupRabbitMQ tradeRBMQ;
 
         // Stock variables
-        private int stocksForSale = 1000;
         private const int stocksPerOrder = 100;
-        private const double pricePerOrder = 1000;
-        private int currentStonkValue = 500;
+        //private const double pricePerOrder = 1000;
+
+        private int stocksForSale = 1000;
+        private static int currentStonkValue = 1000;
+
+        List<int> list = new List<int>();
 
         // Initializer i think
         public TradingForm()
@@ -72,24 +76,36 @@ namespace PBT205_Assessment1_Group4_AIJ
 
             // Random start to graph
 
-            Random rand = new Random();
-
-            stockValueGraph.Series["$$$"].Points.AddXY(0, currentStonkValue);
-
-            for (int i = 1; i < 8; i++)
+/*            if (userDetails.lTest.Count == 0)
             {
-                int newStonkValue = currentStonkValue + rand.Next(-200, 200);
+                Random rand = new Random();
 
-                if (newStonkValue < 100)
-                    newStonkValue = 100;
-                else if (newStonkValue > objChart.AxisY.Maximum - 100)
-                    objChart.AxisY.Maximum = newStonkValue + 100;
 
-                currentStonkValue = newStonkValue;
-                stockValueGraph.Series["$$$"].Points.AddXY(i, newStonkValue);
+                int count = stockValueGraph.Series["$$$"].Points.Count;
 
-                lblPrice.Text = "$" + newStonkValue;
-            }
+                stockValueGraph.Series["$$$"].Points.AddXY(0, currentStonkValue);
+
+
+
+                for (int i = 1; i < 8; i++)
+                {
+                    int newStonkValue = currentStonkValue + rand.Next(-200, 200);
+
+                    if (newStonkValue < 100)
+                        newStonkValue = 100;
+                    else if (newStonkValue > objChart.AxisY.Maximum - 100)
+                        objChart.AxisY.Maximum = newStonkValue + 100;
+
+                    currentStonkValue = newStonkValue;
+                    userDetails.lTest.Add(newStonkValue);
+                    stockValueGraph.Series["$$$"].Points.AddXY(i, newStonkValue);
+
+                    lblPrice.Text = "$" + newStonkValue;
+                }
+
+            }*/
+
+            //lblPrice.Text = userDetails.test + userDetails.lTest.Count;
         }
 
         private void TradingForm_Load(object sender, EventArgs e)
@@ -104,7 +120,8 @@ namespace PBT205_Assessment1_Group4_AIJ
             {
                 // Update the stock and user values
                 stocksForSale += stocksPerOrder;
-                Send(stocksForSale.ToString());
+
+                Send(CreateMsg());
                 UserDetailsAfterStockExchange(currentStonkValue, -stocksPerOrder);
             }
             else // Exit, No more stock to sell 
@@ -117,14 +134,28 @@ namespace PBT205_Assessment1_Group4_AIJ
             if (CheckUserBalance() && CheckStockForSale())
             {
                 // Update the stock and user values
-                stocksForSale -= stocksPerOrder;
-                Send(stocksForSale.ToString());
-                UserDetailsAfterStockExchange(-currentStonkValue, stocksPerOrder);
+                stocksForSale -= stocksPerOrder; // Lower Stock Count
+
+                Send(CreateMsg()); // Push new Stock Count to the system
+                UserDetailsAfterStockExchange(-currentStonkValue, stocksPerOrder); // This does the stuff in the user account
             }
             else // Exit, No more money to spend or stock to buy
-                return; 
+                return;
         }
 
+        String CreateMsg()
+        {
+            String message = "[" + stocksForSale + ", " + currentStonkValue + ", " + list.Count;
+
+            for (int i = 0; i < list.Count; i++)
+            {
+                message += ", " + list[i];
+            }
+
+            message += "]";
+
+            return message;
+        }
 
         public void Send(String message)
         {
@@ -136,21 +167,59 @@ namespace PBT205_Assessment1_Group4_AIJ
                                               body: body);
         }
 
+        void ConvertMsg2Things(String message)
+        {
+            // Converting a string to this method
+            // found in https://stackoverflow.com/questions/11170541/c-sharp-parsing-a-vector2-from-string
+            // By: GETah, Date: 23/06/2012
+
+            // Remove all the non numeric values besides the space inbetween
+            message = message.Replace("[", "")
+                             .Replace(",", "")
+                             .Replace("]", "");
+
+            // Store the message into seperate strings to parse to a float
+            String[] vals = message.Split(' ');
+            // Store the values in the vector
+
+            stocksForSale = int.Parse(vals[0]);
+            currentStonkValue = int.Parse(vals[1]);
+
+            int graphCount = int.Parse(vals[2]);
+
+            for (int i = 0; i < graphCount; i++)
+            {
+                if (i >= list.Count)
+                {
+                    list.Add(int.Parse(vals[i + 3]));
+                }
+                else
+                {
+                    list[i] = int.Parse(vals[i + 3]);
+                }
+            }
+        }
+
+
         public void StartConsume()
         {
             // Subscribe to incoming message
             var consumer = new EventingBasicConsumer(tradeRBMQ.GetModel());
+
+            // Updates values on the users end
             consumer.Received += (sender, ea) =>
             {
                 // Receive message
-                var text = Encoding.UTF8.GetString(ea.Body.ToArray());
+                var text = Encoding.UTF8.GetString(ea.Body.ToArray()); // Convert weird sequence into a string
 
                 // Update the stocks
-                stocksForSale = int.Parse(text);
+                //stocksForSale = int.Parse(text); // If Stock value has changed then update stocks for sale
+                ConvertMsg2Things(text);
                 HandleOrder();
             };
+            // IDK what this does but when i remove this it crashes
             tradeRBMQ.GetModel().BasicConsume(queue: tradeRBMQ.GetQueueName(),
-                                              autoAck: true,
+                                              autoAck: true, // I didnt notice this doing anything
                                               consumer: consumer);
         }
 
@@ -158,6 +227,29 @@ namespace PBT205_Assessment1_Group4_AIJ
         {
             // Shows the current available stocks
             lblStockForSaleCount.Text = stocksForSale.ToString();
+            lblPrice.Text = "$" + currentStonkValue.ToString();
+
+            //stockValueGraph.Series["$$$"].Points.AddXY(stockValueGraph.Series["$$$"].Points.Count, newStonkValue);
+
+            for (int i = 0; i < list.Count; i++)
+            {
+                if (i < stockValueGraph.Series["$$$"].Points.Count)
+                    stockValueGraph.Series["$$$"].Points[i].SetValueXY(i, list[i]);
+                else
+                {
+                    // Set Size of graph
+                    var objChart = stockValueGraph.ChartAreas[0];
+
+                    objChart.AxisX.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Number;
+
+                    objChart.AxisX.Maximum++;
+
+                    if (list[i] > objChart.AxisY.Maximum - 100)
+                        objChart.AxisY.Maximum = list[i] + 100;
+
+                    stockValueGraph.Series["$$$"].Points.AddXY(i, list[i]);
+                }
+            }
         }
 
         private void UserDetailsAfterStockExchange(double pricePerOrder, int stocksPerOrder)
@@ -210,6 +302,7 @@ namespace PBT205_Assessment1_Group4_AIJ
             else
                 return true;
         }
+
         private void btnChat_Click(object sender, EventArgs e)
         {
             // Hides the trading form
@@ -235,14 +328,13 @@ namespace PBT205_Assessment1_Group4_AIJ
 
         }
 
+        // The Update Button
         private void button1_Click(object sender, EventArgs e)
         {
             // Set Size of graph
             var objChart = stockValueGraph.ChartAreas[0];
 
             objChart.AxisX.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Number;
-
-            objChart.AxisX.Maximum++;
 
             // Setup stock value graph
 
@@ -252,13 +344,18 @@ namespace PBT205_Assessment1_Group4_AIJ
 
             if (newStonkValue < 100)
                 newStonkValue = 100;
-            else if (newStonkValue > objChart.AxisY.Maximum - 100)
-                objChart.AxisY.Maximum = newStonkValue + 100;
 
             currentStonkValue = newStonkValue;
-            stockValueGraph.Series["$$$"].Points.AddXY(stockValueGraph.Series["$$$"].Points.Count, newStonkValue);
+            
+            //stockValueGraph.Series["$$$"].Points.AddXY(stockValueGraph.Series["$$$"].Points.Count, newStonkValue);
 
-            lblPrice.Text = "$" + newStonkValue;
+            list.Add(newStonkValue);
+
+            //lblPrice.Text = "$" + newStonkValue;
+
+            Send(CreateMsg()); // Push new Stock Count to the system
+
+
         }
 
         private void clearButton_Click(object sender, EventArgs e)

@@ -7,6 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using System.Numerics;
 
 /// <summary>
 /// This is the chat system
@@ -117,7 +118,7 @@ namespace PBT205_Assessment1_Group4_AIJ
             // Create the struct to add details
             tradeUser userDetails;
             userDetails.balance = 10000.0f;
-            userDetails.stockCount = 1000;            
+            userDetails.stockCount = 1000;
 
             // Add the user
             users.Add(userName, userDetails);

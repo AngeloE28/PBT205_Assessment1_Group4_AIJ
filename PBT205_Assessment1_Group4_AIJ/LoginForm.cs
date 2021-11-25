@@ -15,7 +15,7 @@ namespace PBT205_Assessment1_Group4_AIJ
     {
         // Variables of a user for trading
         public int stockCount;
-        public double balance;        
+        public double balance;
     }    
 
     public partial class LoginForm : Form

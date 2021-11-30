@@ -57,7 +57,7 @@ namespace PBT205_Assessment1_Group4_AIJ
                                           exchangeType: ExchangeType.Topic);
 
             // Send an initial joining message similar to a handshake
-            Send(stocksForSale.ToString());
+            Send(CreateMsg());
             StartConsume();
 
             // Setup stock value graph
@@ -123,6 +123,23 @@ namespace PBT205_Assessment1_Group4_AIJ
 
                 Send(CreateMsg());
                 UserDetailsAfterStockExchange(currentStonkValue, -stocksPerOrder);
+
+
+                // Setup stock value graph
+
+                Random rand = new Random();
+
+                int newStonkValue = currentStonkValue + rand.Next(-200, 200);
+
+                if (newStonkValue < 100)
+                    newStonkValue = 100;
+
+                currentStonkValue = newStonkValue;
+
+                list.Add(newStonkValue);
+
+                Send(CreateMsg()); // Push new Stock Count to the system
+
             }
             else // Exit, No more stock to sell 
                 return; 
@@ -138,6 +155,23 @@ namespace PBT205_Assessment1_Group4_AIJ
 
                 Send(CreateMsg()); // Push new Stock Count to the system
                 UserDetailsAfterStockExchange(-currentStonkValue, stocksPerOrder); // This does the stuff in the user account
+
+
+                // Setup stock value graph
+
+                Random rand = new Random();
+
+                int newStonkValue = currentStonkValue + rand.Next(-200, 200);
+
+                if (newStonkValue < 100)
+                    newStonkValue = 100;
+
+                currentStonkValue = newStonkValue;
+
+                list.Add(newStonkValue);
+
+                Send(CreateMsg()); // Push new Stock Count to the system
+
             }
             else // Exit, No more money to spend or stock to buy
                 return;
@@ -182,6 +216,8 @@ namespace PBT205_Assessment1_Group4_AIJ
             String[] vals = message.Split(' ');
             // Store the values in the vector
 
+
+            // Update Graph
             stocksForSale = int.Parse(vals[0]);
             currentStonkValue = int.Parse(vals[1]);
 
@@ -346,16 +382,10 @@ namespace PBT205_Assessment1_Group4_AIJ
                 newStonkValue = 100;
 
             currentStonkValue = newStonkValue;
-            
-            //stockValueGraph.Series["$$$"].Points.AddXY(stockValueGraph.Series["$$$"].Points.Count, newStonkValue);
 
             list.Add(newStonkValue);
 
-            //lblPrice.Text = "$" + newStonkValue;
-
             Send(CreateMsg()); // Push new Stock Count to the system
-
-
         }
 
         private void clearButton_Click(object sender, EventArgs e)

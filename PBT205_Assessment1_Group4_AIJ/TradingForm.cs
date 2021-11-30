@@ -120,26 +120,10 @@ namespace PBT205_Assessment1_Group4_AIJ
             {
                 // Update the stock and user values
                 stocksForSale += stocksPerOrder;
+                UpdateGraph();
 
                 Send(CreateMsg());
                 UserDetailsAfterStockExchange(currentStonkValue, -stocksPerOrder);
-
-
-                // Setup stock value graph
-
-                Random rand = new Random();
-
-                int newStonkValue = currentStonkValue + rand.Next(-200, 200);
-
-                if (newStonkValue < 100)
-                    newStonkValue = 100;
-
-                currentStonkValue = newStonkValue;
-
-                list.Add(newStonkValue);
-
-                Send(CreateMsg()); // Push new Stock Count to the system
-
             }
             else // Exit, No more stock to sell 
                 return; 
@@ -152,26 +136,10 @@ namespace PBT205_Assessment1_Group4_AIJ
             {
                 // Update the stock and user values
                 stocksForSale -= stocksPerOrder; // Lower Stock Count
+                UpdateGraph();
 
                 Send(CreateMsg()); // Push new Stock Count to the system
                 UserDetailsAfterStockExchange(-currentStonkValue, stocksPerOrder); // This does the stuff in the user account
-
-
-                // Setup stock value graph
-
-                Random rand = new Random();
-
-                int newStonkValue = currentStonkValue + rand.Next(-200, 200);
-
-                if (newStonkValue < 100)
-                    newStonkValue = 100;
-
-                currentStonkValue = newStonkValue;
-
-                list.Add(newStonkValue);
-
-                Send(CreateMsg()); // Push new Stock Count to the system
-
             }
             else // Exit, No more money to spend or stock to buy
                 return;
@@ -367,6 +335,12 @@ namespace PBT205_Assessment1_Group4_AIJ
         // The Update Button
         private void button1_Click(object sender, EventArgs e)
         {
+            UpdateGraph();
+            Send(CreateMsg()); // Push new Stock Count to the system
+        }
+
+        private void UpdateGraph()
+        {
             // Set Size of graph
             var objChart = stockValueGraph.ChartAreas[0];
 
@@ -384,8 +358,6 @@ namespace PBT205_Assessment1_Group4_AIJ
             currentStonkValue = newStonkValue;
 
             list.Add(newStonkValue);
-
-            Send(CreateMsg()); // Push new Stock Count to the system
         }
 
         private void clearButton_Click(object sender, EventArgs e)

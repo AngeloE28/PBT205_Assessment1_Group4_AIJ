@@ -420,24 +420,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\isaac\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\Angelo Estoque\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\isaac\\OneDrive\\Programming\\GitHub\\PBT205_Assessment1_Group4_AIJ\\PBT205_Assessment1_Group4_AIJ\\PBT205_Assessment1_Group4_AIJ.csproj",
+      "projectUniqueName": "C:\\Users\\Angelo Estoque\\Desktop\\torrens\\yr2\\t3\\PBT205\\Ass\\Ass1\\PBT205_Assessment1_Group4_AIJ\\PBT205_Assessment1_Group4_AIJ\\PBT205_Assessment1_Group4_AIJ.csproj",
       "projectName": "PBT205_Assessment1_Group4_AIJ",
-      "projectPath": "C:\\Users\\isaac\\OneDrive\\Programming\\GitHub\\PBT205_Assessment1_Group4_AIJ\\PBT205_Assessment1_Group4_AIJ\\PBT205_Assessment1_Group4_AIJ.csproj",
-      "packagesPath": "C:\\Users\\isaac\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\isaac\\OneDrive\\Programming\\GitHub\\PBT205_Assessment1_Group4_AIJ\\PBT205_Assessment1_Group4_AIJ\\obj\\",
+      "projectPath": "C:\\Users\\Angelo Estoque\\Desktop\\torrens\\yr2\\t3\\PBT205\\Ass\\Ass1\\PBT205_Assessment1_Group4_AIJ\\PBT205_Assessment1_Group4_AIJ\\PBT205_Assessment1_Group4_AIJ.csproj",
+      "packagesPath": "C:\\Users\\Angelo Estoque\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Angelo Estoque\\Desktop\\torrens\\yr2\\t3\\PBT205\\Ass\\Ass1\\PBT205_Assessment1_Group4_AIJ\\PBT205_Assessment1_Group4_AIJ\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-      ],
       "configFilePaths": [
-        "C:\\Users\\isaac\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Users\\Angelo Estoque\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

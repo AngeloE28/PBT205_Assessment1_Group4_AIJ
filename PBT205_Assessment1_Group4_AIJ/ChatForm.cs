@@ -58,7 +58,7 @@ namespace PBT205_Assessment1_Group4_AIJ
 
         private void ChatForm_Load(object sender, EventArgs e)
         {
-            
+
         }
 
         private void btnSend_Click(object sender, EventArgs e)
@@ -153,104 +153,46 @@ namespace PBT205_Assessment1_Group4_AIJ
         {
             e.DrawBackground();
             e.DrawFocusRectangle();
-
-            float textSize = 10.0f;
-            float textSpacing = 9.5f;
-            //  String to hold the message to display
-            String item = listbxMsgHistory.Items[e.Index].ToString();
-            String boldMsg;            
-
-            // Finding the substring inbetween two special characters
-            // found in https://stackoverflow.com/questions/12108582/extracting-string-between-two-characters
-            // By: name, Date: dd/mm/yyyy            
-            int posFrom = item.IndexOf("/*");
-            if (posFrom != -1) // Found the first special character
+            String item = listbxMsgHistory.Items[e.Index].ToString();            
+            float textSize = 10.0f;            
+            int textlength = 0;
+            Brush textColor = Brushes.Black;
+            Font font = new Font(FontFamily.GenericSansSerif, textSize, FontStyle.Regular);            
+            String[] items = item.Split('&');
+            for (int part = 0; part < items.Length; part++)
             {
-                int posTo = item.IndexOf("*/", posFrom + 1);
-                if (posTo != -1) // Found the second special character
+                String msg = items[part];
+                if (part > 0)
                 {
-                    boldMsg = item.Substring(posFrom + 2, posTo - posFrom - 2); // Gets the substring between the two special characters,
-                                                                                // adjusting the size according to the size of the special characters                    
-                                                                                                                        
-                    // Check if the bold text is at the start of the string
-                    if (posFrom != userID.Length + 2)
+                    msg = items[part].Substring(1, items[part].Length - 1);
+                    switch (items[part][0])
                     {
-                        // Display regular text first
-                        e.Graphics.DrawString(item.Substring(0, posFrom),
-                                              new Font(FontFamily.GenericSansSerif, textSize, FontStyle.Regular),
-                                              Brushes.Black,
-                                              e.Bounds.X,
-                                              e.Bounds.Y);
-
-                        // Get the width of the text
-                        float startingPos = TextRenderer.MeasureText(item.Substring(0, posFrom),
-                                                                 new Font(FontFamily.GenericSansSerif, textSpacing, FontStyle.Regular)).Width;
-
-                        // Display the bold message with the proper position
-                        e.Graphics.DrawString(boldMsg,
-                                              new Font(FontFamily.GenericSansSerif, textSize, FontStyle.Bold),
-                                              Brushes.Black,
-                                              startingPos,
-                                              e.Bounds.Y);
-
-                        float boldPos = TextRenderer.MeasureText(boldMsg,
-                                                                 new Font(FontFamily.GenericSansSerif, textSpacing, FontStyle.Bold)).Width;
-
-                        String lastChar = item.Substring(item.Length - 1);
-                        float remainingMsgPos = item.IndexOf(lastChar);
-
-                        // Check and show if there is text after the bold texts
-                        if(remainingMsgPos != posTo)
-                        {
-                            e.Graphics.DrawString(item.Substring(posTo + 2),
-                                                  new Font(FontFamily.GenericSansSerif, textSize, FontStyle.Regular),
-                                                  Brushes.Black,
-                                                  startingPos + boldPos,
-                                                  e.Bounds.Y);
-                        }
+                        case 'l': font = new Font(FontFamily.GenericSansSerif, textSize, FontStyle.Bold); break;
+                        case 'o': font = new Font(FontFamily.GenericSansSerif, textSize, FontStyle.Italic); break;
+                        case 'n': font = new Font(FontFamily.GenericSansSerif, textSize, FontStyle.Underline); break;
+                        case 'm': font = new Font(FontFamily.GenericSansSerif, textSize, FontStyle.Strikeout); break;
+                        case 'r': font = new Font(FontFamily.GenericSansSerif, textSize, FontStyle.Regular); break;
+                        case '0': textColor = Brushes.Black; break;
+                        case '1': textColor = Brushes.DarkBlue; break;
+                        case '2': textColor = Brushes.Green; break;
+                        case '3': textColor = Brushes.Cyan; break;
+                        case '4': textColor = Brushes.Brown; break;
+                        case '5': textColor = Brushes.Purple; break;
+                        case '6': textColor = Brushes.Orange; break;
+                        case '7': textColor = Brushes.LightGray; break;
+                        case '8': textColor = Brushes.DarkGray; break;
+                        case '9': textColor = Brushes.Blue; break;
+                        case 'a': textColor = Brushes.Lime; break;
+                        case 'b': textColor = Brushes.LightBlue; break;
+                        case 'c': textColor = Brushes.Red; break;
+                        case 'd': textColor = Brushes.Magenta; break;
+                        case 'e': textColor = Brushes.Yellow; break;
+                        case 'f': textColor = Brushes.White; break;
                     }
-                    else
-                    {                          
-                        String startSring = userID + ":";
-                        // Display the regular message with the proper position
-                        e.Graphics.DrawString(startSring,
-                                              new Font(FontFamily.GenericSansSerif, textSize, FontStyle.Regular),
-                                              Brushes.Black,
-                                              e.Bounds.X,
-                                              e.Bounds.Y);
-
-                        // Get the userID width
-                        float userPos = TextRenderer.MeasureText(userID,
-                                                                 new Font(FontFamily.GenericSansSerif, textSpacing, FontStyle.Regular)).Width;
-                        // Display bold text first
-                        e.Graphics.DrawString(boldMsg,
-                                              new Font(FontFamily.GenericSansSerif, textSize, FontStyle.Bold),
-                                              Brushes.Black,
-                                              userPos,
-                                              e.Bounds.Y);
-
-                        // Get the width of the text
-                        float boldPos = TextRenderer.MeasureText(boldMsg,
-                                                             new Font(FontFamily.GenericSansSerif, textSpacing, FontStyle.Bold)).Width;
-
-                        // Display the regular message with the proper position
-                        e.Graphics.DrawString(item.Substring(posTo + 2),
-                                              new Font(FontFamily.GenericSansSerif, textSize, FontStyle.Regular),
-                                              Brushes.Black,
-                                              userPos + boldPos,
-                                              e.Bounds.Y);
-
-                    }
-                    return;
                 }
+                e.Graphics.DrawString(msg, font, textColor, textlength, e.Bounds.Y);
+                textlength += TextRenderer.MeasureText(msg, font).Width;
             }
-
-            // No bold text, draw string normally
-            e.Graphics.DrawString(item,
-                                  new Font(FontFamily.GenericSansSerif, 10, FontStyle.Regular),
-                                  Brushes.Black,
-                                  e.Bounds);
         }
-
     }
 }
